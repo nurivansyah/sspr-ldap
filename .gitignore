@@ -1,0 +1,51 @@
+## Go build / test / vendor
+/bin/
+/build/
+*.test
+*.out
+coverage.out
+*.coverprofile
+
+# Vendor and module files
+vendor/
+pkg/mod/
+go.work
+
+## OS files
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+# Linux temp/backup
+*~
+*.swp
+.*.swp
+.cache/
+
+## Editors and IDEs
+.idea/
+.vscode/
+.vscode/*
+*.sublime-workspace
+*.sublime-project
+
+## Environment and secrets
+.env
+.env.local
+.env.*.local
+
+## Logs and runtime files
+*.log
+core
+core.*
+*.bak
+
+## Generated code and artifacts
+*.gen.go
+templates/*.cache
+
+## Project-specific artifacts
+infra/session/sessions.db
+

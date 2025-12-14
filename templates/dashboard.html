@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LDAP Auth</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-gray-800">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600">Welcome, <strong>{{.Username}}</strong></span>
+                    <a href="/logout" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Your Dashboard</h2>
+            <p class="text-gray-600 mb-6">You are successfully logged in.</p>
+            
+            <div class="space-y-4">
+                <div class="border-t pt-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Account Management</h3>
+                    <a 
+                        href="/change-password" 
+                        class="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
