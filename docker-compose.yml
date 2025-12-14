@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sspr-ldap:local
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-8080}:8080"
+    restart: unless-stopped
