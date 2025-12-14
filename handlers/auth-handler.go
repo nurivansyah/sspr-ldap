@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"sspr-ldap/domain"
 	"sspr-ldap/infra/session"
@@ -53,23 +54,24 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 		user, err := h.authService.Authenticate(creds)
 		if err != nil {
+			log.Printf("Authentication failed: %s", err.Error())
 			w.Header().Set("HX-Retarget", "#error-message")
 			w.Header().Set("HX-Reswap", "innerHTML")
-			fmt.Fprintf(w, `<div class="text-red-600 text-sm">%s</div>`, err.Error())
+			fmt.Fprint(w, `<div class="text-red-600 text-sm">Authentication failed</div>`)
 			return
 		}
 
 		// Set session - CRITICAL: Must be called before any other writes
 		err = h.session.SetAuthenticated(r, w, user.Username, user.DN)
 		if err != nil {
-			fmt.Printf("❌ Failed to save session: %v\n", err)
+			log.Printf("Failed to save session: %v\n", err)
 			w.Header().Set("HX-Retarget", "#error-message")
 			w.Header().Set("HX-Reswap", "innerHTML")
 			fmt.Fprint(w, `<div class="text-red-600 text-sm">Failed to create session</div>`)
 			return
 		}
 
-		fmt.Printf("✅ Session created for user: %s (DN: %s)\n", user.Username, user.DN)
+		log.Printf("session created for user: %s", user.Username)
 
 		// For HTMX requests, use HX-Redirect
 		w.Header().Set("HX-Redirect", "/dashboard")

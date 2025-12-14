@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"sspr-ldap/domain"
 	"sspr-ldap/infra/session"
@@ -25,13 +26,13 @@ func NewUserHandler(userService *services.UserService, session *session.Store, t
 
 func (h *UserHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
 	if !h.session.IsAuthenticated(r) {
-		fmt.Println("⚠️  Dashboard access denied - not authenticated")
+		log.Println("dashboard access denied - not authenticated")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
 	username := h.session.GetUsername(r)
-	fmt.Printf("✅ Dashboard accessed by: %s\n", username)
+	log.Printf("dashboard accessed by user: %s", username)
 
 	h.template.Render(w, "dashboard.html", map[string]string{
 		"Username": username,
@@ -75,9 +76,11 @@ func (h *UserHandler) ChangePassword(w http.ResponseWriter, r *http.Request) {
 
 		err := h.userService.ChangePassword(passwordChange)
 		if err != nil {
+			// Log the detailed error server-side and show a generic message to the client
+			log.Printf("password change failed for user %s: %v", username, err)
 			w.Header().Set("HX-Retarget", "#error-message")
 			w.Header().Set("HX-Reswap", "innerHTML")
-			fmt.Fprintf(w, `<div class="text-red-600 text-sm">Failed to change password: %s</div>`, err.Error())
+			fmt.Fprint(w, `<div class="text-red-600 text-sm">Failed to change password</div>`)
 			return
 		}
 
