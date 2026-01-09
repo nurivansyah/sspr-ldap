@@ -19,6 +19,7 @@ RUN apk add --no-cache ca-certificates
 
 WORKDIR /app
 COPY --from=builder /app/sspr-ldap /app/sspr-ldap
+COPY --from=builder /src/templates /app/templates
 
 ENV PORT=8080
 EXPOSE 8080
